@@ -26,6 +26,10 @@ const { inputText, result, processText } = useLocalAI()
     border-radius: 4px;
     width: 100%;
     font-size: 1.2rem;
+
+    &:focus {
+      outline-color: #ccc;
+    }
   }
 
   pre {

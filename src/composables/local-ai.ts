@@ -20,9 +20,12 @@ export function useLocalAI() {
     }
 
     const processText = async () => {
+        if (inputText.value.length <= 2) return result.value = ''
+
         try {
-            const promptResult = await session.prompt(inputText.value) as string
-            result.value = promptResult.trim()
+            let promptResult = await session.prompt(inputText.value) as string
+            promptResult = promptResult.trim()
+            if (promptResult) result.value = promptResult
         } catch (error) {
             if (!(error instanceof DOMException && error.name === 'AbortError')) {
                 console.error('Error processing text:', error)
@@ -30,7 +33,7 @@ export function useLocalAI() {
         }
     }
 
-    const debouncedProcessText = useThrottleFn(processText, 500, true, false)
+    const debouncedProcessText = useThrottleFn(processText, 800, true, false)
 
     onMounted(async () => {
         await createSession()
